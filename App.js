@@ -23,11 +23,7 @@ limiter = rateLimit({
 
 
 
-
-
-
-
-
+app.listen(port, () => logger(`Server running at ${port}`))
 // logger 
 function logger(message){
     console.log(chalk.bgYellow.red(`(LOG):${Date()}:${message}`))
