@@ -48,6 +48,10 @@ else{
 	app.listen(port, () => logger(`Server running at ${port}`))
 }
 
+app.get('/github', (req,res) => {
+	res.redirect(pck.homepage)
+	logger.req('Redirect',req)
+})
 
 
 // logger 
