@@ -76,29 +76,20 @@ app.get('/user/:name',limiter, (req, res) => {
                   }
                   issues(first: 1) {
                     totalCount
-                  }
-      
-                  repositories(first: 100, ownerAffiliations: OWNER, orderBy: {direction: DESC, field: STARGAZERS}) {
-                    totalCount
-                    nodes {
-                      stargazers {
-                        totalCount
-                      }
-                    }
-                  }
-                }
+                  }                }
               }
               `,variables: { login: req.params.name },})
       .then((response) => {
-        console.log(response.data.data.user.issues);
-        res.json(response.data.data)
-      })
-      .catch((error) => {
-        res.send(error)
-        logger.err(error)
-      });
-
-})
+        res.json({
+            name:response.data.data.user.name,
+            login:response.data.data.user.login,
+            commits:response.data.data.user.contributionsCollection.totalCommitContributions,
+            issues:response.data.data.user.issues.totalCount,
+            pullRequests:response.data.data.user.pullRequests.totalCount,
+            repositoriesContributedTo:response.data.data.user.repositoriesContributedTo.totalCount,
+        })}).catch((error) => {
+            res.send(error)
+            logger.err(error)})})
 
 // logger 
 function logger(message){
