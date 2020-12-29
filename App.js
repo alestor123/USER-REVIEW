@@ -11,6 +11,7 @@ axios = require('axios'),
 rateLimit = require("express-rate-limit"),
 api = 'https://api.github.com/graphql',
 port = process.env.PORT || options.port || options.p || 3000,
+reqLimit = process.env.LIMIT ||  options.limit || options.l || 50,
 token = process.env.TOKEN || options.token || options.t;
 // limit 
 limiter = rateLimit({
