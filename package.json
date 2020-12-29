@@ -1,0 +1,28 @@
+{
+  "name": "year-review-api",
+  "version": "1.0.0",
+  "description": "This is a simple code for getting user year stats",
+  "main": "App.js",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "chalk": "^4.1.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-rate-limit": "^5.2.3",
+    "minimist": "^1.2.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alestor123/USER-REVIEW.git"
+  },
+  "author": "Alestor Aldous",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alestor123/USER-REVIEW/issues"
+  },
+  "homepage": "https://github.com/alestor123/USER-REVIEW#readme"
+}
