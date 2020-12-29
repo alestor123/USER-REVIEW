@@ -8,9 +8,16 @@ app = express(),
 chalk = require('chalk'),
 options  = require('minimist')(process.argv.slice(2)),
 axios = require('axios'),
+rateLimit = require("express-rate-limit"),
 api = 'https://api.github.com/graphql',
+port = process.env.PORT || options.port || options.p || 3000,
 token = process.env.TOKEN || options.token || options.t;
-
+// limit 
+limiter = rateLimit({
+	windowMs: 30 * 60 * 1000, // 15 minutes
+	max: reqLimit*2, 	
+	message:'Your Limit Has Exceeded'
+});
 
 
 
