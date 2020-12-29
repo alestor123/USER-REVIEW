@@ -47,12 +47,58 @@ process.exit(0)
 else{
 	app.listen(port, () => logger(`Server running at ${port}`))
 }
-
+// setting axios header auth 
+if (token) {// add express limit 
+    axios.defaults.headers.common['Authorization'] = `bearer ${token}`;
+    logger(`Got Token ${token}`)
+}
 app.get('/github', (req,res) => {
 	res.redirect(pck.homepage)
 	logger.req('Redirect',req)
 })
+app.get('/user/:name',limiter, (req, res) => {
+    logger.req(`Name : ${req.params.name}`,req)
+    axios.post(api, 
+        {query: `
+              query userInfo($login: String!) {
+                user(login: $login) {
+                  name
+                  login
+                  contributionsCollection {
+                    totalCommitContributions
+                    restrictedContributionsCount
+                  }
+                  repositoriesContributedTo(first: 1, contributionTypes: [COMMIT, ISSUE, PULL_REQUEST, REPOSITORY]) {
+                    totalCount
+                  }
+                  pullRequests(first: 1) {
+                    totalCount
+                  }
+                  issues(first: 1) {
+                    totalCount
+                  }
+      
+                  repositories(first: 100, ownerAffiliations: OWNER, orderBy: {direction: DESC, field: STARGAZERS}) {
+                    totalCount
+                    nodes {
+                      stargazers {
+                        totalCount
+                      }
+                    }
+                  }
+                }
+              }
+              `,variables: { login: req.params.name },})
+      .then((response) => {
+        console.log(response.data.data.user.issues);
+        res.json(response.data.data)
+      })
+      .catch((error) => {
+        res.send(error)
+        logger.err(error)
+      });
 
+})
 
 // logger 
 function logger(message){
@@ -60,4 +106,7 @@ function logger(message){
 }    
 logger.req = (message,req) => {
     console.log(chalk.bgYellow.blue(`(REQUEST):${Date()}:Ip : ${req.ip} : ${message}`))
+}
+logger.err = (message) => {
+    console.error(chalk.bgRed.green(`(ERROR):${Date()} : ${message}`))
 }
